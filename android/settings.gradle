@@ -1,0 +1,3 @@
+rootProject.name = 'Smartphone_App'
+
+include ':app'
