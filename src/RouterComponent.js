@@ -1,5 +1,6 @@
 import React from "react";
 import { Scene, Router, Actions, ActionConst } from "react-native-router-flux";
+import connect from "react-redux";
 
 import LoginForm from "./components/LoginForm";
 import Header from "./components/common";
@@ -9,6 +10,8 @@ import Settings from "./components/Settings";
 import Medicines from "./components/Medicines";
 import MedicineDetail from "./components/MedicineDetail";
 import Alerts from "./components/Alerts";
+
+import { getUpcomingAlerts } from "./actions/AlertsActions";
 
 class RouterComponent extends React.Component {
   render() {
@@ -35,24 +38,26 @@ class RouterComponent extends React.Component {
               titleStyle={{ alignSelf: "center", color: "steelblue" }}
               component={Home}
               title="MedScanRx Home"
-              onEnter={() => Actions.refresh()}
             />
-            <Scene 
+            <Scene
               key="settings"
               titleStyle={{ color: "steelblue" }}
               // Currently broken, will need to take a look at this more (back and title dont play together :(  )
               //titleStyle={{ alignSelf: "center" }}
               component={Settings}
-              title="Settings" 
+              title="Settings"
+              onBack={() => Actions.reset("main")}
               back={true}
-            /> 
-            <Scene 
+            />
+            <Scene
               key="medicines"
               titleStyle={{ color: "steelblue" }}
               // Currently broken, will need to take a look at this more (back and title dont play together :(  )
               //titleStyle={{ alignSelf: "center" }}
               component={Medicines}
-              title="All Medicines"
+              title="All Medicines" 
+              onBack={() => Actions.reset("main")}
+              back={true}
             />
             <Scene
               //Removed for now, but will think about if I want them or not ...
@@ -62,13 +67,16 @@ class RouterComponent extends React.Component {
               titleStyle={{ color: "steelblue" }}
               component={MedicineDetail}
               title="Medicine Details"
-  
+              onBack={() => Actions.reset("main")}
+              back={true}
             />
             <Scene
               key="alerts"
               titleStyle={{ color: "steelblue" }}
               component={Alerts}
               title="All Alerts"
+              onBack={() => Actions.reset("main")}
+              back={true}
             />
           </Scene>
         </Scene>

@@ -4,27 +4,27 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { getNextFiveMedalerts } from "../actions/HomeActions";
+import { getNextFiveMedalerts, getAllUpcomingAlerts } from "../actions/HomeActions";
 import MedicineAlertDetail from "./MedicineAlertDetail";
 import LoadingAsync from "./LoadingAsync";
 
 class MedicineAlertList extends Component {
   componentWillMount() {
-    this.props.getNextFiveMedalerts();
+
+    //DEV TESTING NEED THE PATIENTID SOME OTHER WAY
+    this.props.getAllUpcomingAlerts(100000);
   }
 
   renderMedicines() {
-    return _.map(this.props.nextFiveMedalerts, (val, key) => {
+    return _.map(this.props.allUpcomingAlerts, (val, key) => {
       return <MedicineAlertDetail key={val.medicineId} medicine={val} />;
     });
   }
 
-  render() {
-    console.log("Im mounting the list")
-    
+  render() {    
     return(
-      this.props.nextFiveMedalerts 
-        ? <ScrollView>{this.renderMedicines()}</ScrollView>  
+      this.props.allUpcomingAlerts 
+        ? <ScrollView>{this.renderMedicines()}</ScrollView>   
         : <LoadingAsync />   
     ); 
     
@@ -33,10 +33,10 @@ class MedicineAlertList extends Component {
 
 const mapStateToProps = state => {
   return {
-    nextFiveMedalerts: state.home.nextFiveMedalerts
+    allUpcomingAlerts: state.home.allUpcomingAlerts
   };
 };
 
-export default connect(mapStateToProps, { getNextFiveMedalerts })(
+export default connect(mapStateToProps, { getAllUpcomingAlerts })(
   MedicineAlertList
 );

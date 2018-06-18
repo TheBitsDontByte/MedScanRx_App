@@ -3,13 +3,15 @@ import { ListView, Text } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { getAllMedicines } from "../actions/medicinesActions";
+import { getAllMedicines, getAllPrescriptionInfo } from "../actions/medicinesActions";
 import MedicineListDetail from "./MedicineListDetail";
 import LoadingAsync from "./LoadingAsync";
 
 class MedicineList extends Component {
   componentWillMount() {
-    this.props.getAllMedicines();
+    //this.props.getAllMedicines();
+    //THIS NEEDS TO BE FIXED
+    this.props.getAllPrescriptionInfo(100000);
     this.createDataSource(this.props.allMedicines);
   }
 
@@ -54,4 +56,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { getAllMedicines })(MedicineList);
+export default connect(mapStateToProps, { getAllMedicines, getAllPrescriptionInfo })(MedicineList);

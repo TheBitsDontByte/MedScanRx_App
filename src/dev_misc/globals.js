@@ -1,4 +1,6 @@
 export const TIMEOUT_DURATION = 10;
+export const BASE_URL = "http://localhost:55991"
+
 import moment from "moment";
 
 const now = moment();

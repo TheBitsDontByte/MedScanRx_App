@@ -11,31 +11,40 @@ class MedicineListDetail extends Component {
 
   render() {
     const {
-      medicineName,
-      description,
+      brandName,
+      genericName,
+      color,
+      shape,
+      identifiers,
       dosage,
-      specialInstructions
+      doctorNotes,
+      warnings,
+      barcode
     } = this.props.medicine;
     const { titleStyle, doseViewStyle } = styles;
     return (
       <TouchableWithoutFeedback
         onPress={this.onSpecificMedicinePress.bind(this)}
       >
-        <View> 
-          <Card> 
+        <View>
+          <Card>
             <CardItem
               style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
             >
-              <Text style={titleStyle}>{medicineName}</Text>
+              <Text style={titleStyle}>Brand Name: {brandName}</Text>
             </CardItem>
             <CardItem
               style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
             >
               <View style={doseViewStyle}>
-                <Text>Description: {description}</Text>
+                 <Text>Barcode: {barcode} </Text>
+                <Text>
+                  Description:{" "}
+                  {`${color}, ${shape}, marked with ${identifiers}`}
+                </Text>
                 <Text>Dose: {dosage} </Text>
-                <Text>Special Instructions: {specialInstructions} </Text>
-                <Text>Other stuff or same as other places ? </Text>
+                <Text>Warnings: {warnings} </Text>
+                <Text>Doctor's Note: {doctorNotes} </Text>
               </View>
             </CardItem>
           </Card>

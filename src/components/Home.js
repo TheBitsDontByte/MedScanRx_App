@@ -25,10 +25,11 @@ class Home extends Component {
 
   render() {
     const { containerStyle, subHeaderStyle } = styles;
+    console.log("Render here");
 
     return (
       <View style={containerStyle}>
-        <NavigationButtons 
+        <NavigationButtons  
           onSettingsPress={this.onSettingsPress}
           onMedicinesPress={this.onMedicinesPress.bind(this)}
           onAlertsPress={this.onAlertsPress}

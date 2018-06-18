@@ -17,12 +17,12 @@ class MedicineAlertDetail extends React.Component {
       timerTextStyle,
       doseViewStyle
     } = styles; 
+    console.log("Alert detail props", this.props)
     const {
-      medicineName,
+      brandName,
       dosage,
-      specialInstructions,
-      alertDateTime,
-
+      doctorNotes,
+      nextAlert,
       shape,
       color,
       identifiers,
@@ -37,18 +37,18 @@ class MedicineAlertDetail extends React.Component {
             <CardItem
               style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
             >
-              <Text style={titleStyle}>{medicineName}</Text>
+              <Text style={titleStyle}>{brandName}</Text>
             </CardItem>
             <CardItem
               style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
             >
               <View style={doseViewStyle}>
-                <Text>Description: {`${color}, ${shape}, with ${identifiers}`}</Text>   
+                <Text>Description: {`${color}, ${shape}, marked with ${identifiers}`}</Text>   
                 <Text>Dose: {dosage} </Text>
-                <Text>Special Instructions: {specialInstructions} </Text> 
+                <Text>Special Instructions: {doctorNotes} </Text> 
               </View> 
               <View style={timerViewStyle}>
-                <Text style={timerTextStyle}>Next Dose {moment(alertDateTime).fromNow()}</Text>
+                <Text style={timerTextStyle}>Next Dose {moment(nextAlert).fromNow()}</Text>
                   
               </View> 
             </CardItem> 

@@ -16,14 +16,11 @@ class Medicines extends Component {
     const { showAll } = this.state;
     return (
       <View style={containerStyle}>
-        <MedicinesNavigationButtons
+        {/* <MedicinesNavigationButtons
           onUpcomingAlertsPress={() => this.setState({ showAll: false })}
           onAllMedicinesPress={() => this.setState({ showAll: true })}
-        />
-        <Text style={subHeaderStyle}>
-          {showAll ? "All Medicines" : "Upcoming Alerts"}
-        </Text>
-        {showAll ? <MedicineList /> : <MedicineAlertList />}
+        /> */}
+        <MedicineList /> 
       </View>
     );
   }
