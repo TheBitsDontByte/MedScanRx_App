@@ -10,6 +10,7 @@ import Settings from "./components/Settings";
 import Medicines from "./components/Medicines";
 import MedicineDetail from "./components/MedicineDetail";
 import Alerts from "./components/Alerts";
+import Scanner from './components/Scanner';
 
 import { getUpcomingAlerts } from "./actions/AlertsActions";
 
@@ -54,7 +55,7 @@ class RouterComponent extends React.Component {
               titleStyle={{ color: "steelblue" }}
               // Currently broken, will need to take a look at this more (back and title dont play together :(  )
               //titleStyle={{ alignSelf: "center" }}
-              component={Medicines}
+              component={Medicines}  
               title="All Medicines" 
               onBack={() => Actions.reset("main")}
               back={true}
@@ -77,6 +78,12 @@ class RouterComponent extends React.Component {
               title="All Alerts"
               onBack={() => Actions.reset("main")}
               back={true}
+            />
+            <Scene
+              key="scanner"
+              title="Barcode Scanner"
+              component={Scanner}
+            
             />
           </Scene>
         </Scene>
