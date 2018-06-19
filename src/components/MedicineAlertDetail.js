@@ -7,7 +7,7 @@ import { Card, CardItem } from "./common";
 
 class MedicineAlertDetail extends React.Component {
   onSpecificMedicinePress() {
-    Actions.medicineDetail({ medicineId: this.props.medicine.medicineId });
+    Actions.medicineDetail({ prescriptionId: this.props.medicine.prescriptionId });
   }
 
   render() {

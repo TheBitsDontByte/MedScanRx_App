@@ -6,7 +6,7 @@ import { Card, CardItem } from "./common";
 
 class MedicineListDetail extends Component {
   onSpecificMedicinePress() {
-    Actions.medicineDetail({ medicineId: this.props.medicine.medicineId });
+    Actions.medicineDetail({ prescriptionId: this.props.medicine.prescriptionId });
   }
 
   render() {
@@ -19,11 +19,11 @@ class MedicineListDetail extends Component {
       dosage,
       doctorNotes,
       warnings,
-      barcode
+      barcode,
     } = this.props.medicine;
     const { titleStyle, doseViewStyle } = styles;
     return (
-      <TouchableWithoutFeedback
+      <TouchableWithoutFeedback 
         onPress={this.onSpecificMedicinePress.bind(this)}
       >
         <View>

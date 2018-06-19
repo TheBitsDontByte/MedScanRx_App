@@ -4,7 +4,7 @@ export default (state = {}, action) => {
   switch (action.type) {
     case GET_ALL_ALERTS:
     case GET_UPCOMING_ALERTS:
-      return { ...state, alerts: action.payload };
+      return { ...state, allUpcomingAlerts: action.payload };
     default:
       return state;
   }

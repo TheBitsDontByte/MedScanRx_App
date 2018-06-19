@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 //Keep as alerts or get medicines ? 
-import { getAllAlerts } from "../actions/AlertsActions";
+import { getAllUpcomingAlerts } from "../actions/AlertsActions";
 import AlertListDetail from "./AlertListDetail";
 import LoadingAsync from "./LoadingAsync";
 
 class AlertList extends Component {
   componentWillMount() {
-    this.props.getAllAlerts();
+    this.props.getAllUpcomingAlerts(100000);
     this.createDataSource(this.props.allAlerts);
   }
 
@@ -45,8 +45,8 @@ class AlertList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    allAlerts: state.alerts.alerts
+    allAlerts: state.alerts.allUpcomingAlerts
   };
 };
 
-export default connect(mapStateToProps, { getAllAlerts })(AlertList);
+export default connect(mapStateToProps, { getAllUpcomingAlerts })(AlertList);

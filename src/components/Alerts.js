@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { connect } from 'react-redux';
 
-import { getAllAlerts, getUpcomingAlerts } from "../actions/AlertsActions";
+import { getAllUpcomingAlerts } from "../actions/AlertsActions";
 
 import AlertList from "./AlertList";
 import AlertsNavigationButtons from "./AlertsNavigationButtons";
@@ -11,29 +11,12 @@ import MedicineAlertList from './MedicineAlertList';
 class Alerts extends Component {
   state = { showAll: true };
 
-  onAllAlertsPress() {
-    this.setState({showAll: true});
-  }
-
-  onUpcomingAlertsPress() {
-  
-    this.setState({showAll: false});
-  }
-
   render() {
     const { containerStyle, subHeaderStyle } = styles;
     const { showAll } = this.state;
     return (
       <View style={containerStyle}> 
-        <AlertsNavigationButtons 
-          onAllAlertsPress={this.onAllAlertsPress.bind(this)}
-          onUpcomingAlertsPress={this.onUpcomingAlertsPress.bind(this)}
-        />
-        <Text style={subHeaderStyle}>
-          {showAll ? "All Medicines" : "Upcoming Alerts"}
-        </Text>
-        {}
-        {showAll ? <AlertList /> : <MedicineAlertList />}
+        <AlertList /> 
       </View>
     );
   }
@@ -55,4 +38,4 @@ const styles = {
   }
 };
 
-export default connect(null, {getUpcomingAlerts, getAllAlerts })(Alerts);
+export default connect(null, { getAllUpcomingAlerts })(Alerts);

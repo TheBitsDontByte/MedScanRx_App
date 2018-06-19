@@ -1,4 +1,4 @@
-import { GET_ALL_MEDICINES, GET_MEDICINE } from "../actions/medicinesActions";
+import { GET_ALL_MEDICINES, GET_MEDICINE, GET_PRESCRIPTION_WITH_ALERTS } from "../actions/medicinesActions";
 
 
 
@@ -9,6 +9,8 @@ export default (state = {}, action) => {
         case GET_MEDICINE:
         console.log("in reducer", action)
             return {...state, medicineDetail: action.payload}
+        case GET_PRESCRIPTION_WITH_ALERTS:
+            return { prescriptionWithAlerts: action.payload}
         default:
             return state; 
     }

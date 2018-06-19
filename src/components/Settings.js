@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 
 class Settings extends Component {
   onScannerPress() {
-    console.log("Clicked");
+    
     Actions.scanner();
   }
 
