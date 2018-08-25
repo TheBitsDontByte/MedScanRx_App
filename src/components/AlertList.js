@@ -10,7 +10,7 @@ import LoadingAsync from "./LoadingAsync";
 
 class AlertList extends Component {
   componentWillMount() {
-    this.props.getAllUpcomingAlerts(100000);
+    this.props.getAllUpcomingAlerts(this.props.patientId);
     this.createDataSource(this.props.allAlerts);
   }
 
@@ -45,7 +45,8 @@ class AlertList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    allAlerts: state.alerts.allUpcomingAlerts
+    allAlerts: state.alerts.allUpcomingAlerts,
+    patientId: state.auth.patientId
   };
 };
 

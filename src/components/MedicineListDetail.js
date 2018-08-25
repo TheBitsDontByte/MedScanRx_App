@@ -1,29 +1,39 @@
 import React, { Component } from "react";
-import { Text, View, TouchableWithoutFeedback } from "react-native";
+import { Text, View, TouchableWithoutFeedback, Image } from "react-native";
 import { Actions } from "react-native-router-flux";
-
+import No_image from "../media/No_image.svg";
 import { Card, CardItem } from "./common";
 
 class MedicineListDetail extends Component {
+  componentWillMount() {
+    this.setState({image: { uri: this.props.medicine.imageUrl }})
+  }
+
+  changeImageOnError(){
+    this.setState({image: require("../media/No_image.png")})
+  }
+  
   onSpecificMedicinePress() {
-    Actions.medicineDetail({ prescriptionId: this.props.medicine.prescriptionId });
+    Actions.medicineDetail({
+      prescriptionId: this.props.medicine.prescriptionId
+    });
   }
 
   render() {
     const {
-      brandName,
-      genericName,
+      prescriptionName,
       color,
       shape,
       identifiers,
       dosage,
       doctorNotes,
       warnings,
-      barcode,
+      imageUrl
     } = this.props.medicine;
-    const { titleStyle, doseViewStyle } = styles;
+    console.log("Medicine info", this.props.medicine, imageUrl);
+    const { titleStyle, doseViewStyle, imageViewStyle, categoryStyle } = styles;
     return (
-      <TouchableWithoutFeedback 
+      <TouchableWithoutFeedback
         onPress={this.onSpecificMedicinePress.bind(this)}
       >
         <View>
@@ -31,25 +41,42 @@ class MedicineListDetail extends Component {
             <CardItem
               style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
             >
-              <Text style={titleStyle}>Brand Name: {brandName}</Text>
+              <Text style={titleStyle}>{prescriptionName}</Text>
             </CardItem>
             <CardItem
               style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
             >
               <View style={doseViewStyle}>
-                 <Text>Barcode: {barcode} </Text>
                 <Text>
-                  Description:{" "}
-                  {`${color}, ${shape}, marked with ${identifiers}`}
+                  <Text style={categoryStyle}>Description:</Text>{" "}
+                  {`${color} and ${shape} with ${identifiers} marking(s)`}
                 </Text>
-                <Text>Dose: {dosage} </Text>
-                <Text>Warnings: {warnings} </Text>
-                <Text>Doctor's Note: {doctorNotes} </Text>
+                <Text>
+                  <Text style={categoryStyle}>Dose:</Text> {dosage}{" "}
+                </Text>
+                {warnings != "" && (
+                  <Text>
+                    <Text style={categoryStyle}>Warnings:</Text> {warnings}{" "}
+                  </Text>
+                )}
+                {doctorNotes != "" && (
+                  <Text>
+                    <Text style={categoryStyle}>Doctor's Notes:</Text>{" "}
+                    {doctorNotes}{" "}
+                  </Text>
+                )}
               </View>
+              <View style={imageViewStyle}>
+                <Image
+                  style={{ width: 100, height: 100 }}
+                  source={ this.state.image}
+                  onError={ this.changeImageOnError.bind(this) }
+                /> 
+              </View> 
             </CardItem>
-          </Card>
+          </Card> 
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> 
     );
   }
 }
@@ -58,9 +85,13 @@ const styles = {
   titleStyle: {
     fontSize: 18,
     flex: 1,
-    textAlign: "center"
+    textAlign: "center",
+    fontWeight: "bold"
   },
   doseViewStyle: {
+    flex: 2
+  },
+  imageViewStyle: {
     flex: 1
   },
   doseTextStyle: {},
@@ -71,6 +102,9 @@ const styles = {
   timerTextStyle: {
     textAlign: "center",
     fontSize: 22
+  },
+  categoryStyle: {
+    fontWeight: "bold"
   }
 };
 

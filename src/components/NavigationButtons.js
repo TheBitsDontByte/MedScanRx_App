@@ -7,20 +7,14 @@ class NavigationButtons extends Component {
     return (
       <View style={styles.containerStyle}>
         <Button
-          onPress={this.props.onSettingsPress}
-          newButtonStyle={{ marginTop: 20, borderRadius: 100 }}
-        >
-          Settings
-        </Button>
-        <Button
           onPress={this.props.onMedicinesPress}
-          newButtonStyle={{ marginBottom: 20, borderRadius: 100 }}
+          newButtonStyle={{ borderRadius: 100 }}
         >
           Medicines
-        </Button>
+        </Button> 
         <Button
           onPress={this.props.onAlertsPress}
-          newButtonStyle={{ marginTop: 20, borderRadius: 100 }}
+          newButtonStyle={{ borderRadius: 100 }}
         >
           Alerts
         </Button>

@@ -10,8 +10,8 @@ import LoadingAsync from "./LoadingAsync";
 class MedicineList extends Component {
   componentWillMount() {
     //this.props.getAllMedicines();
-    //THIS NEEDS TO BE FIXED
-    this.props.getAllPrescriptionInfo(100000);
+    //THIS NEEDS TO BE FIXED TEMP DEMO HACK
+    this.props.getAllPrescriptionInfo(this.props.patientId);
     this.createDataSource(this.props.allMedicines);
   }
 
@@ -34,12 +34,7 @@ class MedicineList extends Component {
   }
 
   render() {
-    console.log(
-      "Before regdfnder, props",
-      this.props.allMedicines ? true : false
-    );
-
-   return this.props.allMedicines 
+     return this.props.allMedicines 
     ? <ListView
         enableEmptySections
         dataSource={this.dataSource}  
@@ -52,7 +47,8 @@ class MedicineList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    allMedicines: state.medicines.allMedicines
+    allMedicines: state.medicines.allMedicines,
+    patientId: state.auth.patientId
   };
 };
 

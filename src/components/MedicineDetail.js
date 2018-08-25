@@ -1,99 +1,124 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Image } from "react-native";
 import _ from "lodash";
 import { connect } from "react-redux";
-import { Actions } from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
+import moment from "moment";
 
-import { Card, CardItem } from "./common";
+import ScannerTester from "./ScannerTester";
+import { Card, CardItem, Button } from "./common";
 import { getPrescriptionWithAlerts } from "../actions/medicinesActions";
-import LoadingAsync from './LoadingAsync';
-
-const alerts = [
-  "ALL MOCK DATA, JUST FOR DEMO",
-  "Tuesday, April 5th @ 3:00 PM",
-  "Tuesday, April 5th @ 8:00 PM",
-  "Tuesday, April 6th @ 11:00 AM",
-  "Tuesday, April 6th @ 3:00 PM",
-  "Tuesday, April 6th @ 8:00 PM",
-  "Tuesday, April 7th @ 11:00 AM",
-  "Tuesday, April 7th @ 3:00 PM",
-  "Tuesday, April 7th @ 8:00 PM",
-  "Tuesday, April 8th @ 11:00 AM",
-  "Tuesday, April 8th @ 3:00 PM",
-  "Tuesday, April 8th @ 8:00 PM"
-];
+import LoadingAsync from "./LoadingAsync";
 
 class MedicineDetail extends Component {
-  componentWillMount() {
-    this.props.getPrescriptionWithAlerts(this.props.prescriptionId);
+  constructor() {
+    super();
+    this.state = {image: { uri: null }}
+    this.onScanNowPress = this.onScanNowPress.bind(this);
   }
 
-  // componentDidMount () {
-  //   BackHandler.addEventListener('hardwareBackPress', () => this.backAndroid()) // Listen for the hardware back button on Android to be pressed
-  // }
+  componentWillMount() {
+    this.props.getPrescriptionWithAlerts(this.props.prescriptionId);
 
-  // componentWillUnmount () {
-  //   BackHandler.removeEventListener('hardwareBackPress', () => this.backAndroid()) // Remove listener
-  // }
+  }
 
-  // backAndroid () {
-  //   Actions.reset("main") // Return to home
-  //   return true // Needed so BackHandler knows that you are overriding the default action and that it should not close the app
-  // }
+  componentWillReceiveProps(nextProps) {
+    console.log("the next props", nextProps)
+    if (nextProps.prescriptionWithAlerts) {
+      this.setState({image: { uri: nextProps.prescriptionWithAlerts.imageUrl }})
+    }
+  }
+
+  changeImageOnError(){
+    console.log("errored")
+    this.setState({image: require("../media/No_image.png")})
+  }
 
   renderAlerts(scheduledAlerts) {
     return _.map(scheduledAlerts, alert => {
       return (
         <Card>
           <CardItem>
-            <Text key={alert}>{alert}</Text>
+            <Text key={alert.alertDateTime}>{alert.alertDateTime}</Text>
           </CardItem>
         </Card>
       );
     });
   }
 
+  onScanNowPress() {
+    Actions.medicineScanner({
+      prescriptionWithAlerts: this.props.prescriptionWithAlerts
+    });
+  }
+
   render() {
-    console.log("In render, props", this.props);
-    if (!this.props.prescriptionWithAlerts)
-      return <LoadingAsync />; 
+    if (!this.props.prescriptionWithAlerts) return <LoadingAsync />;
     const {
-      brandName,
+      prescriptionName,
+      shape,
+      identifiers,
       color,
       dosage,
       warnings,
+      currentNumberOfDoses,
+      doctorNotes,
+      imageUrl,
       scheduledAlerts
     } = this.props.prescriptionWithAlerts;
     const {
       alertTextStyle,
       titleStyle,
       doseViewStyle,
-      containerStyle
+      containerStyle,
+      categoryStyle,imageStyle
     } = styles;
-
+    console.log("da props", this.props.prescriptionWithAlerts, imageUrl);
+    console.log("And state", this.state)
     return (
-      <View style={containerStyle}>
+      <View style={containerStyle}> 
         <Card>
           <CardItem
             style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
           >
-            <Text style={titleStyle}>{brandName}'s Details</Text>
+            <Text style={titleStyle}>{prescriptionName}'s Details</Text>
+          </CardItem>
+          <CardItem>
+            <View style={imageStyle}>
+              <Image
+                style={{ width: 150, height: 150 }}
+                source={ this.state.image}
+                onError={ this.changeImageOnError.bind(this) }
+              />
+            </View>
           </CardItem>
           <CardItem style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
             <View style={doseViewStyle}>
-              <Text>Description: {color}</Text>
-              <Text>Dose: {dosage} </Text>
-              <Text>Doses Taken: ???</Text>
-              <Text>Doses Remaining: ??</Text>
-              <Text>Prescribed by: Doctor</Text>
-              <Text>Taking for: ???</Text>
-              <Text>Special Instructions: {warnings} </Text>
-              <Text>Other stuff or same as other places ? </Text>
-              <Text>Other stuff or same as other places ? </Text>
+              <Text>
+                <Text style={categoryStyle}>Description:</Text>{" "}
+                {`${color} and ${shape} with ${identifiers} marking(s)`}
+              </Text>
+              <Text>
+                <Text style={categoryStyle}>Dosage:</Text> {dosage}{" "}
+              </Text>
+              <Text> 
+                <Text style={categoryStyle}>Remaining Doses:</Text>{" "}
+                {currentNumberOfDoses}
+              </Text>
+              <Text>
+                <Text style={categoryStyle}>Warnings:</Text>{" "}
+                {warnings || "(none)"}{" "}
+              </Text>
+              <Text>
+                <Text style={categoryStyle}>Doctor's Notes:</Text>{" "}
+                {doctorNotes || "(none)"}
+              </Text>
             </View>
           </CardItem>
         </Card>
-        <Text style={alertTextStyle}>Upcoming Alerts for {brandName}</Text>
+        <Text style={alertTextStyle}>
+          Upcoming Alerts for {prescriptionName}
+        </Text>
         <ScrollView>{this.renderAlerts(scheduledAlerts)}</ScrollView>
       </View>
     );
@@ -105,6 +130,7 @@ const styles = {
     backgroundColor: "#c1e8ff",
     flex: 1
   },
+  categoryStyle: { fontWeight: "bold" },
   titleStyle: {
     fontSize: 24,
     color: "steelblue",
@@ -122,14 +148,21 @@ const styles = {
     paddingBottom: 5,
     fontSize: 20,
     textAlign: "center"
+  },
+  imageStyle: {
+    flex: 1,
+    alignItems: "center" 
   }
 };
 
 const mapStateToProps = (state, ownProps) => {
   console.log("State in mstp", state);
   return {
-    prescriptionWithAlerts: state.medicines.prescriptionWithAlerts 
+    prescriptionWithAlerts: state.medicines.prescriptionWithAlerts
   };
 };
 
-export default connect(mapStateToProps, { getPrescriptionWithAlerts })(MedicineDetail);
+export default connect(
+  mapStateToProps,
+  { getPrescriptionWithAlerts }
+)(MedicineDetail);

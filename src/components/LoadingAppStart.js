@@ -1,45 +1,61 @@
 import React from "react";
-import firebase from "firebase";
+import jwtDecode from "jwt-decode";
+import { Text, View, AsyncStorage } from "react-native";
 import { Actions } from "react-native-router-flux";
-import { Text, View } from "react-native";
+import { connect } from "react-redux";
+import { reloginUser } from "../actions/AuthActions";
+import axios from "axios";
 
-import { AsyncSpinner, Card } from "./common";
+import { AsyncSpinner } from "./common";
 
-const LoadingAppStart = (LoadingAppStart = () => {
-  firebase.auth().onAuthStateChanged(user => {
-    user ? Actions.main() : Actions.auth();
-  });
+const getJwt = async reloginUser => {
+  try {
+    const token = await AsyncStorage.getItem("jwt");
+    if (token && jwtDecode(token).exp * 1000 > Date.now()) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      reloginUser();
+    } else {
+      Actions.auth();
+    }
+  } catch (error) {
+    console.log("Get jwt error", error); 
+  }
+};
 
-  return (
-    <View> 
-      <View style={styles.containerStyle}>
-        <Text style={styles.titleStyle}>MedScanRx</Text>
-        <AsyncSpinner />
-      </View>   
-    </View>   
-  );
-});
+class LoadingAppStart extends React.Component {
+  componentWillMount() {
+    getJwt(this.props.reloginUser);
+  }
 
-
-
+  render() {
+    return (
+      <View>
+        <View style={styles.containerStyle}>
+          <Text style={styles.titleStyle}>MedScanRx</Text>
+          <AsyncSpinner />
+        </View>
+      </View>
+    );
+  }
+}
 
 const styles = {
   containerStyle: {
     height: "100%",
-    flexDirection: "column", 
-    backgroundColor: "#c1e8ff" ,
+    flexDirection: "column",
+    backgroundColor: "#c1e8ff",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 100,
-    
-    //backgroundColor: "#def3f9"
+    paddingBottom: 100
   },
-  titleStyle: { 
+  titleStyle: {
     fontSize: 42,
     textAlign: "center",
-    paddingBottom: 20,
-
+    paddingBottom: 20
   }
 };
 
-export default LoadingAppStart;
+export default connect(
+  null,
+  { reloginUser }
+)(LoadingAppStart);

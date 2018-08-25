@@ -6,6 +6,16 @@ import { Card, CardItem, Input, Button, Header, AsyncSpinner } from "./common";
 import { emailChanged, passwordChanged, loginUser } from "../actions";
 
 class LoginForm extends Component {
+  constructor() {
+    super();
+    state = { error: null };
+  }
+  componentWillReceiveProps() {
+    if (this.props.error) {
+      this.setState({ error: this.props.error });
+    }
+  }
+
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -15,13 +25,14 @@ class LoginForm extends Component {
   }
 
   onLoginPress() {
+    this.setState({ error: null });
     const { email, password } = this.props;
 
     this.props.loginUser({ email, password });
   }
 
   renderError() {
-    if (this.props.error) {
+    if (this.state.error) {
       return (
         <View style={{ backgroundColor: "white" }}>
           <Text style={styles.errorTextStyle}>{this.props.error}</Text>
@@ -39,14 +50,15 @@ class LoginForm extends Component {
   }
 
   render() {
+    console.log("state", this.state);
     return (
-      <View style={styles.containerStyle}> 
+      <View style={styles.containerStyle}>
         <Card>
           <CardItem>
             <Input
               onChangeText={this.onEmailChange.bind(this)}
               label="Email"
-              placeholder="email@gmail.com"
+              placeholder="my.email@gmail.com"
               value={this.props.email}
             />
           </CardItem>
@@ -59,10 +71,10 @@ class LoginForm extends Component {
               placeholder="password"
             />
           </CardItem>
-          {this.renderError()}
+          {this.state.error && this.renderError.bind(this)}
           <CardItem>{this.renderButton()}</CardItem>
-        </Card> 
-      </View>  
+        </Card>
+      </View>
     );
   }
 }
@@ -89,8 +101,11 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  emailChanged,
-  passwordChanged,
-  loginUser
-})(LoginForm);
+export default connect(
+  mapStateToProps,
+  {
+    emailChanged,
+    passwordChanged,
+    loginUser
+  }
+)(LoginForm);

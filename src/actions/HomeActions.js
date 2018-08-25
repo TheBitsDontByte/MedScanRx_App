@@ -13,16 +13,16 @@ import { allMedicines } from "../dev_misc/globals";
 
 export const getAllUpcomingAlerts = patientId => {
   return dispatch => {
-    console.log("Before the axios call", `${BASE_URL}/Api/AppPrescription/UpcomingAlerts/${patientId}`);
-    axios.get(`${BASE_URL}/AppApi/Prescription/UpcomingAlerts/${patientId}`)
+    console.log("Before the axios call", `${BASE_URL}/Api/App/Prescription/UpcomingAlerts/${patientId}`);
+    axios.get(`${BASE_URL}/Api/App/Prescription/UpcomingAlerts/${patientId}`)
       .then(response => { 
         dispatch({
           type: GET_UPCOMING_ALERTS,
           payload: response.data
-        })
+        }) 
       })
-      .catch(response => {
-        console.log("Error response ", response);
+      .catch(error => {
+        console.log("Error response ", error);
       });
   };
 };

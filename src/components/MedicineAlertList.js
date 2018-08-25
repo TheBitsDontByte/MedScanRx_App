@@ -4,7 +4,7 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-import { getNextFiveMedalerts, getAllUpcomingAlerts } from "../actions/HomeActions";
+import { getAllUpcomingAlerts } from "../actions/HomeActions";
 import MedicineAlertDetail from "./MedicineAlertDetail";
 import LoadingAsync from "./LoadingAsync";
 
@@ -12,7 +12,9 @@ class MedicineAlertList extends Component {
   componentWillMount() {
 
     //DEV TESTING NEED THE PATIENTID SOME OTHER WAY
-    this.props.getAllUpcomingAlerts(100000);
+    //This actually seems to get called every time ... whats uP ?
+    console.log("Im mounting");
+    this.props.getAllUpcomingAlerts(this.props.patientId);
   }
 
   renderMedicines() {
@@ -33,7 +35,8 @@ class MedicineAlertList extends Component {
 
 const mapStateToProps = state => {
   return {
-    allUpcomingAlerts: state.home.allUpcomingAlerts
+    allUpcomingAlerts: state.home.allUpcomingAlerts,
+    patientId: state.auth.patientId
   };
 };
 

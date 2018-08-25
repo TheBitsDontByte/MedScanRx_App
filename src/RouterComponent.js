@@ -1,4 +1,5 @@
 import React from "react";
+import { View, Image, TouchableOpacity } from "react-native";
 import { Scene, Router, Actions, ActionConst } from "react-native-router-flux";
 import connect from "react-redux";
 
@@ -10,15 +11,32 @@ import Settings from "./components/Settings";
 import Medicines from "./components/Medicines";
 import MedicineDetail from "./components/MedicineDetail";
 import Alerts from "./components/Alerts";
-import Scanner from './components/Scanner';
+import ScannerTester from "./components/ScannerTester";
+import MedicineScanner from "./components/MedicineScanner";
 
 import { getUpcomingAlerts } from "./actions/AlertsActions";
 
 class RouterComponent extends React.Component {
+  renderSettingsButton() {
+    return (
+      <TouchableOpacity onPress={() => Actions.settings()}>
+        <Image
+          style={{ marginLeft: 10, height: 28, width: 28 }}
+          source={require("./media/settings.png")}
+        />
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     return (
       <Router>
-        <Scene key="root" hideNavBar>
+        <Scene
+          key="root"
+          hideNavBar
+          renderLeftButton={() => <View />}
+          renderRightButton={() => <View />}
+        >
           <Scene key="loading">
             <Scene hideNavBar key="app_start" component={LoadingAppStart} />
           </Scene>
@@ -33,16 +51,19 @@ class RouterComponent extends React.Component {
             />
           </Scene>
 
-          <Scene key="main" type={ActionConst.RESET}>
+          <Scene
+            key="main"
+          >
             <Scene
               key="home"
               titleStyle={{ alignSelf: "center", color: "steelblue" }}
               component={Home}
               title="MedScanRx Home"
+              renderLeftButton={this.renderSettingsButton}
             />
             <Scene
               key="settings"
-              titleStyle={{ color: "steelblue" }}
+              titleStyle={{ alignSelf: "center", color: "steelblue" }}
               // Currently broken, will need to take a look at this more (back and title dont play together :(  )
               //titleStyle={{ alignSelf: "center" }}
               component={Settings}
@@ -52,11 +73,11 @@ class RouterComponent extends React.Component {
             />
             <Scene
               key="medicines"
-              titleStyle={{ color: "steelblue" }}
+              titleStyle={{ alignSelf: "center", color: "steelblue" }}
               // Currently broken, will need to take a look at this more (back and title dont play together :(  )
               //titleStyle={{ alignSelf: "center" }}
-              component={Medicines}  
-              title="All Medicines" 
+              component={Medicines}
+              title="All Medicines"
               onBack={() => Actions.reset("main")}
               back={true}
             />
@@ -65,25 +86,29 @@ class RouterComponent extends React.Component {
               // rightTitle=" Home"
               // onRight={() => Actions.main()}
               key="medicineDetail"
-              titleStyle={{ color: "steelblue" }}
+              titleStyle={{ alignSelf: "center", color: "steelblue" }}
               component={MedicineDetail}
               title="Medicine Details"
               onBack={() => Actions.reset("main")}
               back={true}
-            />
+            /> 
             <Scene
               key="alerts"
-              titleStyle={{ color: "steelblue" }}
+              titleStyle={{ alignSelf: "center", color: "steelblue" }}
               component={Alerts}
               title="All Alerts"
               onBack={() => Actions.reset("main")}
               back={true}
             />
             <Scene
-              key="scanner"
-              title="Barcode Scanner"
-              component={Scanner}
-            
+              key="scannerTester"
+              title="Scanner Test"
+              component={ScannerTester}
+            />
+            <Scene
+              key="medicineScanner"
+              title="Scanner"
+              component={MedicineScanner}
             />
           </Scene>
         </Scene>

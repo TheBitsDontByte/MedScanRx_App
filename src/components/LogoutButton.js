@@ -1,21 +1,23 @@
 import React from "react";
 import { Button, CardItem } from "./common";
-import firebase from "firebase";
-
+import { logoutUser } from "../actions/AuthActions";
+import { connect } from "react-redux";
 
 class LogoutButton extends React.Component {
-  
   onLogoutPress() {
-    firebase.auth().signOut();
+    this.props.logoutUser();
   }
-  
-    render() {
+
+  render() {
     return (
       <CardItem>
-        <Button onPress={this.onLogoutPress}>Logout</Button>
+        <Button onPress={this.onLogoutPress.bind(this)}>Logout</Button>
       </CardItem>
     );
   }
 }
 
-export default LogoutButton;
+export default connect(
+  null,
+  { logoutUser }
+)(LogoutButton);

@@ -8,8 +8,7 @@ import { connect } from "react-redux";
 
 class Settings extends Component {
   onScannerPress() {
-    
-    Actions.scanner();
+    Actions.scannerTester();
   }
 
   render() {
@@ -19,22 +18,25 @@ class Settings extends Component {
           <CardItem>
             <Text>Account Settings</Text>
           </CardItem>
+          <CardItem>
+            <Button>Change Password (not yet)</Button>
+          </CardItem>
           <LogoutButton />
         </Card>
         <Card>
           <CardItem>
             <Text>Barcode Scanner Test</Text>
-          </CardItem> 
+          </CardItem>
           <CardItem>
             <Button onPress={() => this.onScannerPress()}>Test Scanner</Button>
-          </CardItem> 
+          </CardItem>
           <CardItem>
             {this.props.barcode ? (
               <Text>{`Barcode Scanned: ${this.props.barcode}`}</Text>
             ) : (
               <Text>{"No scans yet, press button to test"}</Text>
             )}
-          </CardItem>   
+          </CardItem>
         </Card>
       </View>
     );

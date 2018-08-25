@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TouchableWithoutFeedback } from "react-native";
+import { Text, View, TouchableWithoutFeedback, Image } from "react-native";
 import { Actions } from "react-native-router-flux";
 import moment from "moment";
 
@@ -7,29 +7,27 @@ import { Card, CardItem } from "./common";
 
 class MedicineAlertDetail extends React.Component {
   onSpecificMedicinePress() {
-    Actions.medicineDetail({ prescriptionId: this.props.medicine.prescriptionId });
+    Actions.medicineDetail({
+      prescriptionId: this.props.medicine.prescriptionId
+    });
   }
 
   render() {
+    const { titleStyle, doseViewStyle, categoryStyle, imageViewStyle } = styles;
+    console.log("Alert detail props", this.props);
     const {
-      timerViewStyle,
-      titleStyle,
-      timerTextStyle,
-      doseViewStyle
-    } = styles; 
-    console.log("Alert detail props", this.props)
-    const {
-      brandName,
+      imageUrl,
+      prescriptionName,
       dosage,
       doctorNotes,
-      nextAlert,
+      warnings,
       shape,
       color,
-      identifiers,
+      identifiers
     } = this.props.medicine;
 
     return (
-      <TouchableWithoutFeedback 
+      <TouchableWithoutFeedback
         onPress={this.onSpecificMedicinePress.bind(this)}
       >
         <View>
@@ -37,35 +35,70 @@ class MedicineAlertDetail extends React.Component {
             <CardItem
               style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
             >
-              <Text style={titleStyle}>{brandName}</Text>
+              <Text style={titleStyle}>{prescriptionName}</Text>
+              {/* MAY REMOVE THIS ENTIRELY< THINK ON IT */}
+              {/* <Text style={timerTextStyle}>
+                Next Dose {moment(nextAlert).fromNow()}
+              </Text> */}
             </CardItem>
             <CardItem
               style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
             >
               <View style={doseViewStyle}>
-                <Text>Description: {`${color}, ${shape}, marked with ${identifiers}`}</Text>   
-                <Text>Dose: {dosage} </Text>
-                <Text>Special Instructions: {doctorNotes} </Text> 
-              </View> 
-              <View style={timerViewStyle}>
-                <Text style={timerTextStyle}>Next Dose {moment(nextAlert).fromNow()}</Text>
-                  
-              </View> 
-            </CardItem> 
-          </Card> 
-        </View>  
+                <Text>
+                  <Text style={categoryStyle}>Description:</Text>{" "}
+                  {`${color} and ${shape} with ${identifiers} marking(s)`}
+                </Text>
+                <Text>
+                  <Text style={categoryStyle}>Dose:</Text> {dosage}{" "}
+                </Text>
+                {warnings != "" && (
+                  <Text>
+                    <Text style={categoryStyle}>Warnings:</Text> {warnings}{" "}
+                  </Text>
+                )}
+                {doctorNotes != "" && (
+                  <Text>
+                    <Text style={categoryStyle}>Doctor's Notes:</Text>
+                    {doctorNotes}{" "}
+                  </Text>
+                )}
+              </View>
+              <View style={imageViewStyle}>
+                <Image
+                  style={{ width: 150, height: 150 }}
+                  source={
+                    imageUrl
+                      ? { uri: imageUrl }
+                      : require("../media/No_image.png")
+                  }
+                />
+              </View>
+              {/* <View style={timerViewStyle}>
+                <Text style={timerTextStyle}>
+                  Next Dose {moment(nextAlert).fromNow()}
+                </Text>
+              </View> */}
+            </CardItem>
+          </Card>
+        </View>
       </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = {
+  categoryStyle: {
+    fontWeight: "bold"
+  },
   titleStyle: {
-    fontSize: 18,
+    fontSize: 22,
     flex: 1,
-    textAlign: "center"
+    textAlign: "center",
+    fontWeight: "bold"
   },
   doseViewStyle: {
+    justifyContent: "space-around",
     flex: 1
   },
   doseTextStyle: {},
@@ -76,6 +109,9 @@ const styles = {
   timerTextStyle: {
     textAlign: "center",
     fontSize: 22
+  },
+  imageViewStyle: {
+    flex: 1
   }
 };
 

@@ -11,15 +11,14 @@ import { allMedicines } from "../dev_misc/globals";
 
 export const getAllUpcomingAlerts = (patientId) => {
   return dispatch => {
-    axios.get(`${BASE_URL}/AppApi/Prescription/AllPrescriptions/${patientId}`)
+    axios.get(`${BASE_URL}/Api/App/Prescription/AllPrescriptions/${patientId}`)
     .then(response => {
       dispatch({
         type: GET_ALL_ALERTS,
         payload: response.data
       })
-      console.log("The response from get all prescrip info", response)
     }).catch(response => {
-      console.log("Im an error in getAllPrescriptionInfo")
+      console.log("Im an error in getAllPrescriptionInfo") 
     })
   }
 }

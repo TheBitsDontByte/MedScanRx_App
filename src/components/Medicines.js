@@ -3,17 +3,14 @@ import { View, Text, StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
 
 import MedicineList from "./MedicineList";
-import MedicinesNavigationButtons from "./MedicinesNavigationButtons";
-import MedicineAlertList from "./MedicineAlertList";
 
-import { Card } from "./common";
 
 class Medicines extends Component {
   state = { showAll: true };
 
+
   render() {
-    const { containerStyle, subHeaderStyle } = styles;
-    const { showAll } = this.state;
+    const { containerStyle,  } = styles;
     return (
       <View style={containerStyle}>
         {/* <MedicinesNavigationButtons

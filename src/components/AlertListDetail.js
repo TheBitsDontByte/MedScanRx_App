@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, TouchableWithoutFeedback } from "react-native";
+import { View, Text, Image, TouchableWithoutFeedback } from "react-native";
 import _ from "lodash";
 import moment from "moment";
 import { Actions } from "react-native-router-flux";
@@ -7,12 +7,21 @@ import { Actions } from "react-native-router-flux";
 import { Card, CardItem } from "./common";
 
 class AlertListDetail extends React.Component {
+  constructor(props) {
+    super();
+
+    this.state = { image: { uri: props.alert.imageUrl } };
+  }
+
+  changeImageOnError() {
+    this.setState({ image: require("../media/No_image.png") });
+  }
+
   onSpecificAlertPress() {
     Actions.medicineDetail({ prescriptionId: this.props.alert.prescriptionId });
   }
 
   render() {
-    console.log("Moment test", moment().add(1, "hour"));
     const {
       upcomingAlertTitleStyle,
       timerViewStyle,
@@ -20,8 +29,8 @@ class AlertListDetail extends React.Component {
       timerTextStyle,
       doseViewStyle
     } = styles;
-    const { brandName, nextAlert } = this.props.alert;
-
+    const { prescriptionName, nextAlert, imageUrl } = this.props.alert;
+    console.log("the props", this.props);
     return (
       <TouchableWithoutFeedback onPress={this.onSpecificAlertPress.bind(this)}>
         <View>
@@ -30,9 +39,9 @@ class AlertListDetail extends React.Component {
               style={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
             >
               {moment(nextAlert).isBefore(moment().add(59, "m")) ? (
-                <Text style={upcomingAlertTitleStyle}>{brandName} -- Upcoming Alert ! </Text>
+                <Text style={upcomingAlertTitleStyle}>{prescriptionName}</Text>
               ) : (
-                <Text style={titleStyle}>{brandName}</Text>
+                <Text style={titleStyle}>{prescriptionName}</Text>
               )}
             </CardItem>
             <CardItem
@@ -40,8 +49,16 @@ class AlertListDetail extends React.Component {
             >
               <View style={timerViewStyle}>
                 <Text style={timerTextStyle}>
-                  Dose {moment(nextAlert).fromNow()}
+                  Take in about {moment(nextAlert).fromNow()}
                 </Text>
+              </View>
+
+              <View style={{ flex: 1, alignItems: "center", }}>
+                <Image
+                  style={{ width: 100, height: 100 }}
+                  source={this.state.image}
+                  onError={this.changeImageOnError.bind(this)}
+                />
               </View>
             </CardItem>
           </Card>
