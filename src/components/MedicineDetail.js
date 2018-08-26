@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import moment from "moment";
 
-import ScannerTester from "./ScannerTester";
+// import ScannerTester from "./ScannerTester";
 import { Card, CardItem, Button } from "./common";
 import { getPrescriptionWithAlerts } from "../actions/medicinesActions";
 import LoadingAsync from "./LoadingAsync";

@@ -7,9 +7,9 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 
 class Settings extends Component {
-  onScannerPress() {
-    Actions.scannerTester();
-  }
+  // onScannerPress() {
+  //   Actions.scannerTester();
+  // }
 
   render() {
     return (
@@ -27,7 +27,7 @@ class Settings extends Component {
           <CardItem>
             <Text>Barcode Scanner Test</Text>
           </CardItem>
-          <CardItem>
+          {/* <CardItem>
             <Button onPress={() => this.onScannerPress()}>Test Scanner</Button>
           </CardItem>
           <CardItem>
@@ -36,7 +36,7 @@ class Settings extends Component {
             ) : (
               <Text>{"No scans yet, press button to test"}</Text>
             )}
-          </CardItem>
+          </CardItem> */}
         </Card>
       </View>
     );

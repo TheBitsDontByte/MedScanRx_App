@@ -8,7 +8,7 @@ import { emailChanged, passwordChanged, loginUser } from "../actions";
 class LoginForm extends Component {
   constructor() {
     super();
-    state = { error: null };
+    this.state = { error: null };
   }
   componentWillReceiveProps() {
     if (this.props.error) {

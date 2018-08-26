@@ -10,7 +10,7 @@ import { readBarcode } from '../actions/ScannerActions'
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux'
 
-import Camera from 'react-native-camera';
+// import Camera from 'react-native-camera';
 
 class Scanner extends Component {
   state = {
